@@ -130,6 +130,15 @@ function checkCollision() {
     return false;
 }
 
+// Функция для обновления счета
+function updateScore() {
+    // Здесь можно добавлять дополнительные логики для отображения счета на экране
+    // Например, изменим цвет текста или добавим анимацию для счета
+    ctx.fillStyle = "black";
+    ctx.font = "16px 'Press Start 2P'";
+    ctx.fillText("Score: " + score, 10, 40); // Выводим счет на экран
+}
+
 // Проверка сбора монет
 function checkCoinCollection() {
     for (let i = 0; i < coins.length; i++) {

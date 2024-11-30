@@ -21,6 +21,9 @@ pipeBottomImg.src = "assets/pipe.png";
 const backgroundImg = new Image();
 backgroundImg.src = "assets/bg.png";
 
+const coinImg = new Image();
+coinImg.src = "assets/coin.png"; // Спрайт монетки
+
 // Параметры птицы
 let birdX = 50;
 let birdY = HEIGHT / 2; // Изначально в центре
@@ -37,6 +40,9 @@ let pipes = [];
 let pipeSpeed = 5;
 let score = 0;
 let frameCount = 0;
+
+// Параметры монетки
+let coins = [];
 
 // Флаг для отслеживания старта игры
 let gameStarted = false;
@@ -57,18 +63,34 @@ function drawPipes() {
     }
 }
 
-// Движение труб
-function movePipes() {
+// Движение труб и монеток
+function movePipesAndCoins() {
     for (let i = 0; i < pipes.length; i++) {
         pipes[i].x -= pipeSpeed;
     }
     pipes = pipes.filter(pipe => pipe.x + pipeWidth > 0);
+
+    for (let i = 0; i < coins.length; i++) {
+        coins[i].x -= pipeSpeed;
+    }
+    coins = coins.filter(coin => coin.x + coin.width > 0);
 }
 
-// Добавление новых труб
-function addPipe() {
+// Добавление новых труб и монетки
+function addPipeAndCoin() {
     const topHeight = Math.floor(Math.random() * (HEIGHT - pipeGap - 100)) + 50;
     pipes.push({ x: WIDTH, topHeight });
+    const coinX = WIDTH + pipeWidth / 2;
+    const coinY = topHeight + pipeGap / 2;
+    coins.push({ x: coinX, y: coinY, width: 20, height: 20 });
+}
+
+// Отрисовка монеток
+function drawCoins() {
+    for (let i = 0; i < coins.length; i++) {
+        const coin = coins[i];
+        ctx.drawImage(coinImg, coin.x - coin.width / 2, coin.y - coin.height / 2, coin.width, coin.height);
+    }
 }
 
 // Проверка столкновений
@@ -89,12 +111,19 @@ function checkCollision() {
     return false;
 }
 
-// Обновление счета
-function updateScore() {
-    for (let i = 0; i < pipes.length; i++) {
-        if (pipes[i].x + pipeWidth < birdX && !pipes[i].scored) {
+// Проверка сбора монет
+function checkCoinCollection() {
+    for (let i = 0; i < coins.length; i++) {
+        const coin = coins[i];
+        if (
+            birdX + birdWidth / 2 > coin.x - coin.width / 2 &&
+            birdX - birdWidth / 2 < coin.x + coin.width / 2 &&
+            birdY + birdHeight / 2 > coin.y - coin.height / 2 &&
+            birdY - birdHeight / 2 < coin.y + coin.height / 2
+        ) {
+            coins.splice(i, 1);
             score++;
-            pipes[i].scored = true;
+            i--;
         }
     }
 }
@@ -106,9 +135,10 @@ function gameLoop() {
     // Отрисовываем фон
     ctx.drawImage(backgroundImg, 0, 0, WIDTH, HEIGHT);
 
-    // Двигаем и рисуем трубы
-    movePipes();
+    // Двигаем и рисуем трубы и монетки
+    movePipesAndCoins();
     drawPipes();
+    drawCoins();
 
     // Отрисовываем птицу
     birdVelocity += gravity;
@@ -117,6 +147,9 @@ function gameLoop() {
 
     // Обновление счета
     updateScore();
+
+    // Проверка сбора монет
+    checkCoinCollection();
 
     // Проверка столкновений
     if (checkCollision()) {
@@ -129,10 +162,10 @@ function gameLoop() {
     ctx.font = "16px 'Press Start 2P'";
     ctx.fillText("Score: " + score, 10, 40);
 
-    // Добавление новой трубы
+    // Добавление новой трубы и монетки
     frameCount++;
     if (frameCount % 70 === 0) {
-        addPipe();
+        addPipeAndCoin();
     }
 
     // Рекурсивный вызов игры
@@ -145,6 +178,7 @@ function restartGame() {
     birdY = HEIGHT / 2; // Птица в центре экрана
     birdVelocity = 0; // Скорость обнуляется
     pipes = []; // Очищаем трубы
+    coins = []; // Очищаем монетки
     score = 0; // Счет обнуляется
     frameCount = 0; // Счетчик кадров обнуляется
     gameStarted = false; // Игра еще не началась

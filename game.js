@@ -47,25 +47,6 @@ let coins = [];
 // Флаг для отслеживания старта игры
 let gameStarted = false;
 
-// Флаг для отслеживания загрузки изображений
-let imagesLoaded = 0;
-const totalImages = 5;
-
-// Функция для отслеживания загрузки изображений
-function onImageLoad() {
-    imagesLoaded++;
-    if (imagesLoaded === totalImages) {
-        drawInitialScreen(); // Отрисовываем начальный экран после загрузки всех изображений
-    }
-}
-
-// Назначаем функцию для отслеживания загрузки изображений
-birdImg.onload = onImageLoad;
-pipeTopImg.onload = onImageLoad;
-pipeBottomImg.onload = onImageLoad;
-backgroundImg.onload = onImageLoad;
-coinImg.onload = onImageLoad;
-
 // Отрисовка птицы
 function drawBird() {
     ctx.drawImage(birdImg, birdX - birdWidth / 2, birdY - birdHeight / 2, birdWidth, birdHeight);
@@ -93,6 +74,14 @@ function movePipesAndCoins() {
         coins[i].x -= pipeSpeed;
     }
     coins = coins.filter(coin => coin.x + coin.width > 0);
+}
+// Функция для обновления счета
+function updateScore() {
+    // Здесь можно добавлять дополнительные логики для отображения счета на экране
+    // Например, изменим цвет текста или добавим анимацию для счета
+    ctx.fillStyle = "black";
+    ctx.font = "16px 'Press Start 2P'";
+    ctx.fillText("Score: " + score, 10, 40); // Выводим счет на экран
 }
 
 // Добавление новых труб и монетки
@@ -128,15 +117,6 @@ function checkCollision() {
         return true;
     }
     return false;
-}
-
-// Функция для обновления счета
-function updateScore() {
-    // Здесь можно добавлять дополнительные логики для отображения счета на экране
-    // Например, изменим цвет текста или добавим анимацию для счета
-    ctx.fillStyle = "black";
-    ctx.font = "16px 'Press Start 2P'";
-    ctx.fillText("Score: " + score, 10, 40); // Выводим счет на экран
 }
 
 // Проверка сбора монет
@@ -249,4 +229,11 @@ document.addEventListener("touchstart", function (e) {
         startGame(); // Начинаем игру при касании экрана
     }
     if (gameStarted) {
-        birdVelocity = lift; // Птица пры
+        birdVelocity = lift; // Птица прыгает вверх при касании экрана
+    }
+});
+
+// Инициализация игры
+backgroundImg.onload = function() {
+    drawInitialScreen(); // Отрисовываем начальный экран
+};

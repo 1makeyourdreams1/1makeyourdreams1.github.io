@@ -140,6 +140,11 @@ document.addEventListener("keydown", function (e) {
         birdVelocity = lift; // Птица прыгает вверх
     }
 });
+// Обработка касания экрана (для мобильных устройств)
+document.addEventListener("touchstart", function (e) {
+    birdVelocity = lift; // Птица прыгает вверх при касании экрана
+});
+
 
 // Инициализация игры
 backgroundImg.onload = function() {

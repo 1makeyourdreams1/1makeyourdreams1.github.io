@@ -90,7 +90,7 @@ function addPipeAndCoin() {
     pipes.push({ x: WIDTH, topHeight });
     const coinX = WIDTH + pipeWidth / 2;
     const coinY = topHeight + pipeGap / 2;
-    coins.push({ x: coinX, y: coinY, width: 20, height: 20 });
+    coins.push({ x: coinX, y: coinY, width: 40, height: 40 });
 }
 
 // Отрисовка монеток

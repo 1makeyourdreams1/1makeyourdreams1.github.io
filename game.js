@@ -126,7 +126,7 @@ function gameLoop() {
 
     // Отображение счета
     ctx.fillStyle = "black";
-    ctx.font = "36px Arial";
+    ctx.font = "24px 'Press Start 2P'";
     ctx.fillText("Score: " + score, 10, 40);
 
     // Добавление новой трубы
@@ -161,7 +161,7 @@ function drawInitialScreen() {
 
     // Отображение инструкции
     ctx.fillStyle = "black";
-    ctx.font = "36px Arial";
+    ctx.font = "18px 'Press Start 2P'";
     ctx.fillText("Press Space to Start", WIDTH / 2 - 150, HEIGHT / 2);
 }
 

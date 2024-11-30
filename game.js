@@ -47,6 +47,25 @@ let coins = [];
 // Флаг для отслеживания старта игры
 let gameStarted = false;
 
+// Флаг для отслеживания загрузки изображений
+let imagesLoaded = 0;
+const totalImages = 5;
+
+// Функция для отслеживания загрузки изображений
+function onImageLoad() {
+    imagesLoaded++;
+    if (imagesLoaded === totalImages) {
+        drawInitialScreen(); // Отрисовываем начальный экран после загрузки всех изображений
+    }
+}
+
+// Назначаем функцию для отслеживания загрузки изображений
+birdImg.onload = onImageLoad;
+pipeTopImg.onload = onImageLoad;
+pipeBottomImg.onload = onImageLoad;
+backgroundImg.onload = onImageLoad;
+coinImg.onload = onImageLoad;
+
 // Отрисовка птицы
 function drawBird() {
     ctx.drawImage(birdImg, birdX - birdWidth / 2, birdY - birdHeight / 2, birdWidth, birdHeight);
@@ -221,11 +240,4 @@ document.addEventListener("touchstart", function (e) {
         startGame(); // Начинаем игру при касании экрана
     }
     if (gameStarted) {
-        birdVelocity = lift; // Птица прыгает вверх при касании экрана
-    }
-});
-
-// Инициализация игры
-backgroundImg.onload = function() {
-    drawInitialScreen(); // Отрисовываем начальный экран
-};
+        birdVelocity = lift; // Птица пры

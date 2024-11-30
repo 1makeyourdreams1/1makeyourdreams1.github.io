@@ -2,9 +2,9 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
-// Устанавливаем размеры канваса
-const WIDTH = 400;
-const HEIGHT = 600;
+// Устанавливаем размеры канваса с учетом мобильных устройств
+const WIDTH = window.innerWidth < 500 ? window.innerWidth : 400;
+const HEIGHT = window.innerHeight < 800 ? window.innerHeight : 600;
 canvas.width = WIDTH;
 canvas.height = HEIGHT;
 
@@ -24,15 +24,15 @@ backgroundImg.src = "assets/bg.png";
 // Параметры птицы
 let birdX = 50;
 let birdY = HEIGHT / 2; // Изначально в центре
-let birdWidth = 50;
-let birdHeight = 50;
+let birdWidth = WIDTH / 8;
+let birdHeight = birdWidth;
 let birdVelocity = 0;
 let gravity = 0.6;
 let lift = -9;
 
 // Параметры труб
-const pipeWidth = 70;
-const pipeGap = 150;
+const pipeWidth = birdWidth * 1.4;
+const pipeGap = birdHeight * 3;
 let pipes = [];
 let pipeSpeed = 5;
 let score = 0;
@@ -126,7 +126,7 @@ function gameLoop() {
 
     // Отображение счета
     ctx.fillStyle = "black";
-    ctx.font = "24px 'Press Start 2P'";
+    ctx.font = "16px 'Press Start 2P'";
     ctx.fillText("Score: " + score, 10, 40);
 
     // Добавление новой трубы
@@ -159,7 +159,10 @@ function drawInitialScreen() {
     // Отрисовываем птицу
     drawBird();
 
-
+    // Отображение инструкции
+    ctx.fillStyle = "black";
+    ctx.font = "12px 'Press Start 2P'";
+    ctx.fillText("Press Space to Start", WIDTH / 2 - 100, HEIGHT / 2);
 }
 
 // Функция для старта игры

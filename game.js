@@ -23,7 +23,7 @@ backgroundImg.src = "assets/bg.png";
 
 // Параметры птицы
 let birdX = 50;
-let birdY = HEIGHT / 2;
+let birdY = HEIGHT / 2; // Изначально в центре
 let birdWidth = 50;
 let birdHeight = 50;
 let birdVelocity = 0;
@@ -116,7 +116,7 @@ function gameLoop() {
     // Проверка столкновений
     if (checkCollision()) {
         alert("Game Over! Your score: " + score);
-        document.location.reload(); // Перезапуск игры
+        restartGame(); // Перезапуск игры
     }
 
     // Отображение счета
@@ -134,17 +134,28 @@ function gameLoop() {
     requestAnimationFrame(gameLoop);
 }
 
+// Функция для перезапуска игры
+function restartGame() {
+    birdX = 50; // Птица возвращается в исходную позицию
+    birdY = HEIGHT / 2; // Птица в центре экрана
+    birdVelocity = 0; // Скорость обнуляется
+    pipes = []; // Очищаем трубы
+    score = 0; // Счет обнуляется
+    frameCount = 0; // Счетчик кадров обнуляется
+    gameLoop(); // Перезапускаем цикл игры
+}
+
 // Обработка нажатия на пробел
 document.addEventListener("keydown", function (e) {
     if (e.code === "Space") {
         birdVelocity = lift; // Птица прыгает вверх
     }
 });
+
 // Обработка касания экрана (для мобильных устройств)
 document.addEventListener("touchstart", function (e) {
     birdVelocity = lift; // Птица прыгает вверх при касании экрана
 });
-
 
 // Инициализация игры
 backgroundImg.onload = function() {

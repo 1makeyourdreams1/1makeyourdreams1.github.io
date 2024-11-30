@@ -148,6 +148,21 @@ function restartGame() {
     score = 0; // Счет обнуляется
     frameCount = 0; // Счетчик кадров обнуляется
     gameStarted = false; // Игра еще не началась
+    drawInitialScreen(); // Отрисовка начального экрана
+}
+
+// Функция для отрисовки начального экрана
+function drawInitialScreen() {
+    // Отрисовываем фон
+    ctx.drawImage(backgroundImg, 0, 0, WIDTH, HEIGHT);
+
+    // Отрисовываем птицу
+    drawBird();
+
+    // Отображение инструкции
+    ctx.fillStyle = "black";
+    ctx.font = "36px Arial";
+    ctx.fillText("Press Space to Start", WIDTH / 2 - 150, HEIGHT / 2);
 }
 
 // Функция для старта игры
@@ -161,7 +176,7 @@ document.addEventListener("keydown", function (e) {
     if (e.code === "Space" && !gameStarted) {
         startGame(); // Начинаем игру по нажатию на пробел
     }
-    if (e.code === "Space") {
+    if (e.code === "Space" && gameStarted) {
         birdVelocity = lift; // Птица прыгает вверх
     }
 });
@@ -171,10 +186,12 @@ document.addEventListener("touchstart", function (e) {
     if (!gameStarted) {
         startGame(); // Начинаем игру при касании экрана
     }
-    birdVelocity = lift; // Птица прыгает вверх при касании экрана
+    if (gameStarted) {
+        birdVelocity = lift; // Птица прыгает вверх при касании экрана
+    }
 });
 
 // Инициализация игры
 backgroundImg.onload = function() {
-    // Игра не начнется, пока не будет взаимодействия с пользователем
+    drawInitialScreen(); // Отрисовываем начальный экран
 };

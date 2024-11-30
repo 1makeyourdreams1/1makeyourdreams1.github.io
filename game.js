@@ -159,10 +159,7 @@ function drawInitialScreen() {
     // Отрисовываем птицу
     drawBird();
 
-    // Отображение инструкции
-    ctx.fillStyle = "black";
-    ctx.font = "18px 'Press Start 2P'";
-    ctx.fillText("Press Space to Start", WIDTH / 2 - 150, HEIGHT / 2);
+
 }
 
 // Функция для старта игры

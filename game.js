@@ -38,6 +38,9 @@ let pipeSpeed = 5;
 let score = 0;
 let frameCount = 0;
 
+// Флаг для отслеживания старта игры
+let gameStarted = false;
+
 // Отрисовка птицы
 function drawBird() {
     ctx.drawImage(birdImg, birdX - birdWidth / 2, birdY - birdHeight / 2, birdWidth, birdHeight);
@@ -98,6 +101,8 @@ function updateScore() {
 
 // Основная функция игры
 function gameLoop() {
+    if (!gameStarted) return; // Игра не начинается до первого нажатия
+
     // Отрисовываем фон
     ctx.drawImage(backgroundImg, 0, 0, WIDTH, HEIGHT);
 
@@ -142,11 +147,20 @@ function restartGame() {
     pipes = []; // Очищаем трубы
     score = 0; // Счет обнуляется
     frameCount = 0; // Счетчик кадров обнуляется
-    gameLoop(); // Перезапускаем цикл игры
+    gameStarted = false; // Игра еще не началась
+}
+
+// Функция для старта игры
+function startGame() {
+    gameStarted = true;
+    gameLoop(); // Запускаем основной цикл игры
 }
 
 // Обработка нажатия на пробел
 document.addEventListener("keydown", function (e) {
+    if (e.code === "Space" && !gameStarted) {
+        startGame(); // Начинаем игру по нажатию на пробел
+    }
     if (e.code === "Space") {
         birdVelocity = lift; // Птица прыгает вверх
     }
@@ -154,10 +168,13 @@ document.addEventListener("keydown", function (e) {
 
 // Обработка касания экрана (для мобильных устройств)
 document.addEventListener("touchstart", function (e) {
+    if (!gameStarted) {
+        startGame(); // Начинаем игру при касании экрана
+    }
     birdVelocity = lift; // Птица прыгает вверх при касании экрана
 });
 
 // Инициализация игры
 backgroundImg.onload = function() {
-    gameLoop();
+    // Игра не начнется, пока не будет взаимодействия с пользователем
 };
